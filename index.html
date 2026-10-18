@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="htmlRoot">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>منصة المنار الإسلامية العالمية - Al Manar Global</title>
+  <style>
+    :root {
+      --primary: #0f5132;
+      --accent: #198754;
+      --bg: #f8f9fa;
+      --card: #ffffff;
+      --text: #212529;
+      --gray: #6c757d;
+      --sidebar-width: 160px;
+      --quran-font-size: 22px;
+    }
+
+    body.dark-theme {
+      --primary: #198754;
+      --accent: #20c997;
+      --bg: #121212;
+      --card: #1e1e1e;
+      --text: #e0e0e0;
+      --gray: #a0a0a0;
+    }
+
+    body.emerald-theme {
+      --primary: #064e3b;
+      --accent: #10b981;
+      --bg: #022c22;
+      --card: #065f46;
+      --text: #ecfdf5;
+      --gray: #a7f3d0;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    aside {
+      width: var(--sidebar-width);
+      background: #0d3b23;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      z-index: 1000;
+      box-shadow: 0 0 15px rgba(0,0,0,0.15);
+    }
+    html[dir="rtl"] aside { right: 0; border-left: 1px solid rgba(255,255,255,0.1); }
+    html[dir="ltr"] aside { left: 0; border-right: 1px solid rgba(255,255,255,0.1); }
+
+    aside .brand {
+      padding: 18px 10px;
+      text-align: center;
+      background: #082918;
+      font-weight: bold;
+      font-size: 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    aside nav {
+      display: flex;
+      flex-direction: column;
+      margin-top: 5px;
+    }
+    aside nav button {
+      background: none;
+      border: none;
+      color: #cfd8dc;
+      padding: 13px 12px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: inherit;
+    }
+
+    aside nav button.active, aside nav button:hover {
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+
+    main {
+      flex: 1;
+      padding-bottom: 50px;
+    }
+    html[dir="rtl"] main { margin-right: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); }
+    html[dir="ltr"] main { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      padding: 15px 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    header h1 { margin: 0; font-size: 20px; }
+    #hijriDate { font-size: 13px; opacity: 0.95; margin-top: 3px; }
+
+    .header-lang-select {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: bold;
+      outline: none;
+      cursor: pointer;
+    }
+    .header-lang-select option { background: var(--card); color: var(--text); }
+
+    .container {
+      padding: 20px;
+      max-width: 850px;
+      margin: auto;
+    }
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .box {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      margin-bottom: 15px;
+    }
+    label {
+      font-weight: bold;
+      font-size: 13px;
+      display: block;
+      margin-bottom: 5px;
+      color: var(--text);
+    }
+    select, input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 11px;
+      margin: 4px 0 12px 0;
+      border-radius: 8px;
+      border: 1px solid #ced4da;
+      font-size: 14px;
+      background: var(--card);
+      color: var(--text);
+    }
+    button.btn-action {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s;
+      margin-top: 5px;
+    }
+    button.btn-action:hover { background: var(--accent); }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .time-card {
+      background: var(--card);
+      margin: 10px 0;
+      padding: 15px 20px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      font-size: 16px;
+      font-weight: bold;
+      border-right: 5px solid var(--accent);
+    }
+    .time-card span:last-child {
+      color: var(--primary);
+      font-family: monospace;
+      font-size: 18px;
+    }
+
+    .quran-reader {
+      background: #fffbe6;
+      border: 1px solid #ffe58f;
+      padding: 20px;
+      border-radius: 14px;
+      line-height: 2.6;
+      font-size: var(--quran-font-size);
+      text-align: justify;
+      max-height: 480px;
+      overflow-y: auto;
+      color: #1a1a1a;
+      font-family: 'Amiri', 'Traditional Arabic', serif;
+    }
+
+    .info-card {
+      background: var(--card);
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 10px;
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    .setting-group {
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      padding-bottom: 12px;
+      margin-bottom: 15px;
+    }
+
+    audio { width: 100%; margin-top: 10px; }
+
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+      aside {
+        width: 100%;
+        height: 60px;
+        bottom: 0;
+        top: auto;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+      }
+      aside .brand { display: none; }
+      aside nav { flex-direction: row; width: 100%; justify-content: space-around; }
+      aside nav button { padding: 8px 3px; font-size: 10px; flex: 1; text-align: center; }
+      main { margin: 0 !important; width: 100% !important; padding-bottom: 80px; }
+      .container { padding: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <aside>
+    <div class="brand">Al Manar Global</div>
+    <nav>
+      <button id="btn-adhanPage" class="active" onclick="switchPage('adhanPage', 'مواقيت الصلاة والأذان', this)">🕌 الصلاة</button>
+      <button id="btn-quranPage" onclick="switchPage('quranPage', 'الاستماع للقرآن', this)">🎧 الاستماع</button>
+      <button id="btn-readPage" onclick="switchPage('readPage', 'قراءة القرآن الكريم', this)">📖 القراءة</button>
+      <button id="btn-searchVersePage" onclick="switchPage('searchVersePage', 'البحث في الآيات', this)">🔍 البحث</button>
+      <button id="btn-azkarPage" onclick="switchPage('azkarPage', 'حصن المسلم - الأذكار', this)">📿 الأذكار</button>
+      <button id="btn-infoPage" onclick="switchPage('infoPage', 'معلومات السور', this)">ℹ️ معلومات</button>
+      <button id="btn-settingsPage" onclick="switchPage('settingsPage', 'إعدادات التطبيق', this)">⚙️ الإعدادات</button>
+    </nav>
+  </aside>
+
+  <main>
+    <header>
+      <div>
+        <h1 id="headerTitle">مواقيت الصلاة والأذان</h1>
+        <div id="hijriDate">جاري التحميل...</div>
+      </div>
+
+      <div>
+        <select id="globalLangSelect" class="header-lang-select" onchange="changeLanguage(this.value)">
+          <option value="ar">العربية</option>
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+        </select>
+      </div>
+    </header>
+
+    <div class="container">
+      
+      <!-- 1. مواقيت الصلاة -->
+      <div id="adhanPage" class="page active">
+        <div class="box">
+          <label>اختر المدينة / العاصمة:</label>
+          <select id="citySelect" onchange="getPrayerTimes()">
+            <optgroup label="المغرب العربي">
+              <option value="Casablanca" selected>الدار البيضاء (Casablanca)</option>
+              <option value="Rabat">الرباط (Rabat)</option>
+              <option value="Marrakesh">مراكش (Marrakesh)</option>
+              <option value="Fez">فاس (Fez)</option>
+              <option value="Algiers">الجزائر (Algiers)</option>
+              <option value="Tunis">تونس (Tunis)</option>
+              <option value="Tripoli">طرابلس (Tripoli)</option>
+              <option value="Nouakchott">نواكشوط (Nouakchott)</option>
+            </optgroup>
+            <optgroup label="الخليج والشرق الأوسط">
+              <option value="Mecca">مكة المكرمة (Mecca)</option>
+              <option value="Riyadh">الرياض (Riyadh)</option>
+              <option value="Cairo">القاهرة (Cairo)</option>
+              <option value="Dubai">دبي (Dubai)</option>
+              <option value="Doha">الدوحة (Doha)</option>
+              <option value="Kuwait">الكويت (Kuwait City)</option>
+              <option value="Muscat">مسقط (Muscat)</option>
+              <option value="Manama">المنامة (Manama)</option>
+              <option value="Amman">عمان (Amman)</option>
+              <option value="Jerusalem">القدس (Jerusalem)</option>
+              <option value="Beirut">بيروت (Beirut)</option>
+              <option value="Damascus">دمشق (Damascus)</option>
+              <option value="Baghdad">بغداد (Baghdad)</option>
+            </optgroup>
+            <optgroup label="أوروبا وآسيا وأمريكا">
+              <option value="Istanbul">إسطنبول (Istanbul)</option>
+              <option value="Paris">باريس (Paris)</option>
+              <option value="London">لندن (London)</option>
+              <option value="Berlin">برلين (Berlin)</option>
+              <option value="Madrid">مدريد (Madrid)</option>
+              <option value="Rome">روما (Rome)</option>
+              <option value="Amsterdam">أمستردام (Amsterdam)</option>
+              <option value="Brussels">بروكسل (Brussels)</option>
+              <option value="Washington">واشنطن (Washington DC)</option>
+              <option value="New York">نويورك (New York)</option>
+              <option value="Montreal">مونتريال (Montreal)</option>
+            </optgroup>
+          </select>
+          <div class="btn-row">
+            <button class="btn-action" onclick="getPrayerTimes()">تحديث المواقيت</button>
+            <button id="gpsBtn" class="btn-action" style="background:#0d6efd;" onclick="getLocationByGPS()">📍 موقعي الحالي (GPS)</button>
+          </div>
+          <div id="gpsStatus" style="font-size:12px; margin-top:8px; font-weight:bold; color:var(--primary);"></div>
+        </div>
+
+        <div class="time-card"><span>الفجر</span><span id="fajr">--:--</span></div>
+        <div class="time-card"><span>الشروق</span><span id="sunrise">--:--</span></div>
+        <div class="time-card"><span>الظهر</span><span id="dhuhr">--:--</span></div>
+        <div class="time-card"><span>العصر</span><span id="asr">--:--</span></div>
+        <div class="time-card"><span>المغرب</span><span id="maghrib">--:--</span></div>
+        <div class="time-card"><span>العشاء</span><span id="isha">--:--</span></div>
+      </div>
+
+      <!-- 2. الاستماع للقرآن -->
+      <div id="quranPage" class="page">
+        <div class="box">
+          <h3 style="margin-top:0">الاستماع للتلاوات القرآنية</h3>
+          
+          <label>🔍 ابحث عن قارئ:</label>
+          <input type="text" id="reciterSearchInput" placeholder="اكتب اسم القارئ للتصفية..." oninput="filterReciters()">
+
+          <label>اختر القارئ:</label>
+          <select id="reciterSelect" onchange="loadReciterSurahs()"></select>
+
+          <div id="moshafSelectContainer" style="display:none; margin-top:8px;">
+            <label style="color:var(--primary);">📜 اختر الرواية / المصحف:</label>
+            <select id="moshafSelect" onchange="renderSurahListForSelectedMoshaf()"></select>
+          </div>
+
+          <hr style="margin:15px 0; border:0; border-top:1px solid rgba(0,0,0,0.1);">
+
+          <label>🔍 ابحث عن سورة للاستماع:</label>
+          <input type="text" id="listenSurahSearchInput" placeholder="اكتب اسم السورة..." oninput="filterListenSurahs()">
+
+          <label>اختر السورة:</label>
+          <select id="surahSelect"></select>
+
+          <button class="btn-action" onclick="playAudio()">تشغيل التلاوة</button>
+          <audio id="audioPlayer" controls style="display:none;"></audio>
+        </div>
+      </div>
+
+      <!-- 3. قراءة القرآن -->
+      <div id="readPage" class="page">
+        <div class="box">
+          <h3 style="margin-top:0">قراءة القرآن الكريم</h3>
+          
+          <label>🔍 ابحث عن سورة للقراءة:</label>
+          <input type="text" id="readSurahSearchInput" placeholder="اكتب اسم السورة..." oninput="filterReadSurahs()">
+
+          <label>اختر السورة للقراءة:</label>
+          <select id="readSurahSelect" onchange="loadSurahText()"></select>
+          
+          <div id="quranTextContent" class="quran-reader" style="margin-top:15px;">اختر سورة لعرضها...</div>
+        </div>
+      </div>
+
+      <!-- 4. البحث في الآيات -->
+      <div id="searchVersePage" class="page">
+        <div class="box">
+          <h3 style="margin-top:0">🔍 البحث في نص القرآن الكريم</h3>
+          <input type="text" id="verseSearchInput" placeholder="مثال: الرحمة، الصلاة...">
+          <button class="btn-action" onclick="searchQuranVerse()">بحث في الآيات</button>
+        </div>
+        <div id="searchResultsContainer"></div>
+      </div>
+
+      <!-- 5. الأذكار -->
+      <div id="azkarPage" class="page">
+        <div class="box">
+          <h3 style="margin-top:0">📿 حصن المسلم - الأذكار اليومية</h3>
+          <label>اختر نوع الذكر:</label>
+          <select id="azkarSelect" onchange="loadAzkarContent()">
+            <option value="morning">أذكار الصباح</option>
+            <option value="evening">أذكار المساء</option>
+            <option value="sleep">أذكار النوم</option>
+          </select>
+          <div id="azkarContent" class="info-card" style="font-size: 17px; line-height: 2;"></div>
+        </div>
+      </div>
+
+      <!-- 6. معلومات السور -->
+      <div id="infoPage" class="page">
+        <div class="box">
+          <h3 style="margin-top:0">معلومات وسبب نزول السور</h3>
+          <label>اختر السورة لمعرفة تفاصيلها:</label>
+          <select id="infoSurahSelect" onchange="loadSurahInfo()"></select>
+          <div id="surahInfoContent" class="info-card">اختر سورة من القائمة.</div>
+        </div>
+      </div>
+
+      <!-- 7. الإعدادات -->
+      <div id="settingsPage" class="page">
+        <div class="box">
+          <h3 style="margin-top:0">⚙️ إعدادات التطبيق</h3>
+          <div class="setting-group">
+            <label>🎨 مظهر التطبيق (الثيم):</label>
+            <select id="themeSelect" onchange="changeTheme()">
+              <option value="light">الوضع الفاتح (Light)</option>
+              <option value="dark">الوضع الداكن (Dark)</option>
+              <option value="emerald">الأخضر الإسلامي (Emerald)</option>
+            </select>
+          </div>
+          <div class="setting-group">
+            <label>🔍 حجم خط قراءة القرآن:</label>
+            <input type="number" id="fontSizeInput" value="22" min="16" max="36" onchange="changeFontSize()">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const surahsList = ["الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس", "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه", "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم", "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر", "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح", "الحجرات", "ق", "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة", "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج", "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس", "التكوير", "الانفطار", "المطففين", "الانشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد", "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات", "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"];
+    window.surahsList = surahsList;
+    window.recitersData = [];
+
+    function switchPage(pageId, title, btn) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('aside nav button').forEach(b => b.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      if (title) document.getElementById('headerTitle').innerText = title;
+      if (btn) btn.classList.add('active');
+    }
+
+    function fetchReciters() {
+      fetch('https://mp3quran.net/api/v3/reciters?language=ar')
+        .then(res => res.json())
+        .then(data => {
+          window.recitersData = data.reciters;
+          renderRecitersOptions(window.recitersData);
+        });
+    }
+
+    function renderRecitersOptions(list) {
+      const select = document.getElementById('reciterSelect');
+      select.innerHTML = '';
+      list.forEach((reciter) => {
+        let originalIndex = window.recitersData.indexOf(reciter);
+        select.innerHTML += `<option value="${originalIndex}">${reciter.name}</option>`;
+      });
+      loadReciterSurahs();
+    }
+
+    function filterReciters() {
+      const query = document.getElementById('reciterSearchInput').value.toLowerCase();
+      const filtered = window.recitersData.filter(r => r.name.toLowerCase().includes(query));
+      renderRecitersOptions(filtered);
+    }
+
+    function filterListenSurahs() {
+      const query = document.getElementById('listenSurahSearchInput').value.toLowerCase();
+      const select = document.getElementById('surahSelect');
+      Array.from(select.options).forEach(opt => {
+        opt.style.display = opt.text.toLowerCase().includes(query) ? '' : 'none';
+      });
+    }
+
+    function filterReadSurahs() {
+      const query = document.getElementById('readSurahSearchInput').value.toLowerCase();
+      const select = document.getElementById('readSurahSelect');
+      Array.from(select.options).forEach(opt => {
+        opt.style.display = opt.text.toLowerCase().includes(query) ? '' : 'none';
+      });
+    }
+
+    function loadReciterSurahs() {
+      const index = document.getElementById('reciterSelect').value;
+      const moshafContainer = document.getElementById('moshafSelectContainer');
+      const moshafSelect = document.getElementById('moshafSelect');
+
+      if(window.recitersData.length > 0 && window.recitersData[index] && window.recitersData[index].moshaf) {
+        const moshafList = window.recitersData[index].moshaf;
+
+        if (moshafList.length > 1) {
+          moshafContainer.style.display = 'block';
+          moshafSelect.innerHTML = '';
+          moshafList.forEach((m, mIndex) => {
+            moshafSelect.innerHTML += `<option value="${mIndex}">${m.name}</option>`;
+          });
+          let maxSurahsIndex = 0;
+          let maxCount = 0;
+          moshafList.forEach((m, mIndex) => {
+            let count = m.surah_list.split(',').length;
+            if (count > maxCount) {
+              maxCount = count;
+              maxSurahsIndex = mIndex;
+            }
+          });
+          moshafSelect.value = maxSurahsIndex;
+        } else {
+          moshafContainer.style.display = 'none';
+        }
+
+        renderSurahListForSelectedMoshaf();
+      }
+    }
+
+    function renderSurahListForSelectedMoshaf() {
+      const index = document.getElementById('reciterSelect').value;
+      const moshafSelect = document.getElementById('moshafSelect');
+      const surahSelect = document.getElementById('surahSelect');
+      surahSelect.innerHTML = '';
+
+      if (window.recitersData[index] && window.recitersData[index].moshaf) {
+        const mIndex = moshafSelect.value || 0;
+        const moshaf = window.recitersData[index].moshaf[mIndex] || window.recitersData[index].moshaf[0];
+        
+        moshaf.surah_list.split(',').forEach(sNum => {
+          let padNum = String(sNum).padStart(3, '0');
+          surahSelect.innerHTML += `<option value="${padNum}">${parseInt(sNum)} - ${surahsList[parseInt(sNum)-1]}</option>`;
+        });
+      }
+    }
+
+    function searchQuranVerse() {
+      const text = document.getElementById('verseSearchInput').value.trim();
+      const container = document.getElementById('searchResultsContainer');
+      if (!text) return;
+      container.innerHTML = '<div class="info-card">جاري البحث...</div>';
+      
+      fetch(`https://api.alquran.cloud/v1/search/${encodeURIComponent(text)}/all/ar`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.code === 200 && data.data.count > 0) {
+            let html = `<div class="info-card"><strong>نتائج البحث (${data.data.count} آية):</strong></div>`;
+            data.data.matches.forEach(m => {
+              html += `
+                <div class="box" style="margin-top:10px;">
+                  <h4 style="color:var(--primary); margin:0 0 5px 0;">سورة ${m.surah.name} (${m.numberInSurah})</h4>
+                  <p style="font-family:'Amiri', serif; font-size:18px; margin:0;">${m.text}</p>
+                </div>
+              `;
+            });
+            container.innerHTML = html;
+          } else {
+            container.innerHTML = '<div class="info-card">لم يتم العثور على نتائج.</div>';
+          }
+        });
+    }
+
+    function playAudio() {
+      const index = document.getElementById('reciterSelect').value;
+      const moshafSelect = document.getElementById('moshafSelect');
+      const surahNum = document.getElementById('surahSelect').value;
+      const player = document.getElementById('audioPlayer');
+
+      if(window.recitersData.length > 0 && window.recitersData[index]) {
+        const mIndex = moshafSelect.value || 0;
+        const moshaf = window.recitersData[index].moshaf[mIndex] || window.recitersData[index].moshaf[0];
+        player.src = moshaf.server + surahNum + '.mp3';
+        player.style.display = 'block';
+        player.play();
+      }
+    }
+
+    // جلب المواقيت بناءً على المدينة المختارة مباشرة
+    function getPrayerTimes() {
+      const city = document.getElementById('citySelect').value || 'Casablanca';
+      const statusDiv = document.getElementById('gpsStatus');
+      if(statusDiv) statusDiv.innerText = '';
+
+      fetch(`https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=&method=3`)
+        .then(res => res.json())
+        .then(data => {
+          if(data.code === 200) {
+            const t = data.data.timings;
+            const h = data.data.date.hijri;
+            document.getElementById('fajr').innerText = t.Fajr;
+            document.getElementById('sunrise').innerText = t.Sunrise;
+            document.getElementById('dhuhr').innerText = t.Dhuhr;
+            document.getElementById('asr').innerText = t.Asr;
+            document.getElementById('maghrib').innerText = t.Maghrib;
+            document.getElementById('isha').innerText = t.Isha;
+            document.getElementById('hijriDate').innerText = `${h.day} ${h.month.ar} ${h.year} هـ`;
+          } else {
+            alert('تعذر جلب مواقيت المدينة المحددة.');
+          }
+        })
+        .catch(() => alert('حدث خطأ في الاتصال بشبكة الإنترنت.'));
+    }
+
+    function getLocationByGPS() {
+      const statusDiv = document.getElementById('gpsStatus');
+      
+      if (!navigator.geolocation) {
+        alert('خاصية تحديد الموقع غير مدعومة.');
+        return;
+      }
+
+      statusDiv.innerText = '⏳ جاري تحديد موقعك عبر GPS...';
+
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          fetch(`https://api.aladhan.com/v1/timings?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}&method=3`)
+            .then(res => res.json())
+            .then(data => {
+              if(data.code === 200) {
+                const t = data.data.timings;
+                const h = data.data.date.hijri;
+                document.getElementById('fajr').innerText = t.Fajr;
+                document.getElementById('sunrise').innerText = t.Sunrise;
+                document.getElementById('dhuhr').innerText = t.Dhuhr;
+                document.getElementById('asr').innerText = t.Asr;
+                document.getElementById('maghrib').innerText = t.Maghrib;
+                document.getElementById('isha').innerText = t.Isha;
+                document.getElementById('hijriDate').innerText = `${h.day} ${h.month.ar} ${h.year} هـ`;
+                statusDiv.innerText = '✅ تم تحديث المواقيت حسب موقعك الحالي بنجاح!';
+              }
+            })
+            .catch(() => {
+              statusDiv.innerText = '❌ فشل جلب المواقيت للإحداثيات الحالية.';
+            });
+        },
+        error => {
+          statusDiv.innerText = '❌ تم رفض إذن الوصول للموقع الجغرافي.';
+        },
+        { timeout: 10000, enableHighAccuracy: true }
+      );
+    }
+
+    function loadAzkarContent() {
+      const data = {
+        morning: "• أصبحنا وأصبح الملك لله، والحمد لله...<br>• اللهم بك أصبحنا وبك أمسينا وبك نحيا وبك نموت وإليك النشور.",
+        evening: "• أمسينا وأمسى الملك لله، والحمد لله...<br>• اللهم بك أمسينا وبك أصبحنا وبك نحيا وبك نموت وإليك المصير.",
+        sleep: "• باسمك ربي وضعت جنبي وبك أرفعه..."
+      };
+      document.getElementById('azkarContent').innerHTML = data[document.getElementById('azkarSelect').value];
+    }
+
+    function loadSurahText() {
+      const num = document.getElementById('readSurahSelect').value;
+      const name = surahsList[parseInt(num) - 1];
+      const container = document.getElementById('quranTextContent');
+      container.innerHTML = `جاري التحميل...`;
+      fetch(`https://api.alquran.cloud/v1/surah/${num}`)
+        .then(res => res.json())
+        .then(data => {
+          if(data.code === 200) {
+            let verses = data.data.ayahs.map(a => `${a.text} ﴿${a.numberInSurah}﴾`).join(' ');
+            container.innerHTML = `<h4 style="text-align:center; color:var(--primary);">سورة ${name}</h4><p>${verses}</p>`;
+          }
+        });
+    }
+
+    function loadSurahInfo() {
+      const num = document.getElementById('infoSurahSelect').value;
+      const container = document.getElementById('surahInfoContent');
+      container.innerHTML = 'جاري التحميل...';
+      fetch(`https://api.alquran.cloud/v1/surah/${num}`)
+        .then(res => res.json())
+        .then(data => {
+          if(data.code === 200) {
+            const s = data.data;
+            container.innerHTML = `
+              <h4 style="color:var(--primary); margin-top:0;">سورة ${s.name} (${s.englishName})</h4>
+              <p><strong>الترتيب:</strong> ${s.number} / 114</p>
+              <p><strong>النوع:</strong> ${s.revelationType === 'Meccan' ? 'مكية 🕋' : 'مدنية 🕌'}</p>
+              <p><strong>عدد الآيات:</strong> ${s.numberOfAyahs} آية</p>
+            `;
+          }
+        });
+    }
+
+    function changeTheme() {
+      const theme = document.getElementById('themeSelect').value;
+      document.body.className = '';
+      if(theme === 'dark') document.body.classList.add('dark-theme');
+      else if(theme === 'emerald') document.body.classList.add('emerald-theme');
+    }
+
+    function changeFontSize() {
+      document.documentElement.style.setProperty('--quran-font-size', document.getElementById('fontSizeInput').value + 'px');
+    }
+
+    function populateStaticSelects() {
+      const sRead = document.getElementById('readSurahSelect');
+      const sInfo = document.getElementById('infoSurahSelect');
+      sRead.innerHTML = ''; sInfo.innerHTML = '';
+      surahsList.forEach((name, index) => {
+        sRead.innerHTML += `<option value="${index + 1}">${index + 1} - ${name}</option>`;
+        sInfo.innerHTML += `<option value="${index + 1}">${index + 1} - ${name}</option>`;
+      });
+    }
+
+    function changeLanguage(lang) {
+      document.getElementById('htmlRoot').lang = lang;
+      document.getElementById('htmlRoot').dir = (lang === 'ar') ? 'rtl' : 'ltr';
+    }
+
+    window.onload = function() {
+      populateStaticSelects();
+      fetchReciters();
+      getPrayerTimes();
+      loadSurahText();
+      loadSurahInfo();
+      loadAzkarContent();
+    };
+  </script>
+</body>
+</html>
