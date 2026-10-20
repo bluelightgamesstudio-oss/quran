@@ -1,0 +1,13 @@
+{
+  "name": "almanar-web",
+  "version": "1.0.0",
+  "description": "Al Manar Global Islamic platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

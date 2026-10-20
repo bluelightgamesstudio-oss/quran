@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="htmlRoot">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f5132">
+  <meta name="description" content="منصة المنار الإسلامية العالمية - prayer times, Quran, azkar">
+  <title>منصة المنار الإسلامية العالمية - Al Manar Global</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <aside>
+    <div class="brand">
+      <span class="brand-text">Al Manar Global</span>
+      <button id="sidebarToggle" class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">☰</button>
+    </div>
+    <nav>
+      <button id="btn-adhanPage" class="active" onclick="switchPage('adhanPage', 'مواقيت الصلاة والأذان', this)"><span class="nav-icon">🕌</span><span class="nav-text">الصلاة</span></button>
+      <button id="btn-quranPage" onclick="switchPage('quranPage', 'الاستماع للقرآن', this)"><span class="nav-icon">🎧</span><span class="nav-text">الاستماع</span></button>
+      <button id="btn-readPage" onclick="switchPage('readPage', 'قراءة القرآن الكريم', this)"><span class="nav-icon">📖</span><span class="nav-text">القراءة</span></button>
+      <button id="btn-searchVersePage" onclick="switchPage('searchVersePage', 'البحث في الآيات', this)"><span class="nav-icon">🔍</span><span class="nav-text">البحث</span></button>
+      <button id="btn-azkarPage" onclick="switchPage('azkarPage', 'حصن المسلم - الأذكار', this)"><span class="nav-icon">📿</span><span class="nav-text">الأذكار</span></button>
+      <button id="btn-infoPage" onclick="switchPage('infoPage', 'معلومات السور', this)"><span class="nav-icon">ℹ️</span><span class="nav-text">معلومات</span></button>
+      <button id="btn-settingsPage" onclick="switchPage('settingsPage', 'إعدادات التطبيق', this)"><span class="nav-icon">⚙️</span><span class="nav-text">الإعدادات</span></button>
+    </nav>
+  </aside>
+
+  <main>
+    <header>
+      <div>
+        <h1 id="headerTitle">مواقيت الصلاة والأذان</h1>
+        <div id="hijriDate">جاري التحميل...</div>
+      </div>
+
+      <div>
+        <select id="globalLangSelect" class="header-lang-select" onchange="changeLanguage(this.value)">
+          <option value="ar">العربية</option>
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+        </select>
+      </div>
+    </header>
+
+    <div class="container">
+      
+      <!-- 1. مواقيت الصلاة -->
+      <div id="adhanPage" class="page active">
+        <div class="box">
+          <label>اختر المدينة / العاصمة:</label>
+          <select id="citySelect" onchange="getPrayerTimes()">
+            <optgroup label="المغرب العربي">
+              <option value="Casablanca" selected>الدار البيضاء (Casablanca)</option>
+              <option value="Rabat">الرباط (Rabat)</option>
+              <option value="Marrakesh">مراكش (Marrakesh)</option>
+              <option value="Fez">فاس (Fez)</option>
+              <option value="Algiers">الجزائر (Algiers)</option>
+              <option value="Tunis">تونس (Tunis)</option>
+              <option value="Tripoli">طرابلس (Tripoli)</option>
+              <option value="Nouakchott">نواكشوط (Nouakchott)</option>
+            </optgroup>
+            <optgroup label="الخليج والشرق الأوسط">
+              <option value="Mecca">مكة المكرمة (Mecca)</option>
+              <option value="Riyadh">الرياض (Riyadh)</option>
+              <option value="Cairo">القاهرة (Cairo)</option>
+              <option value="Dubai">دبي (Dubai)</option>
+              <option value="Doha">الدوحة (Doha)</option>
+              <option value="Kuwait">الكويت (Kuwait City)</option>
+              <option value="Muscat">مسقط (Muscat)</option>
+              <option value="Manama">المنامة (Manama)</option>
+              <option value="Amman">عمان (Amman)</option>
+              <option value="Jerusalem">القدس (Jerusalem)</option>
+              <option value="Beirut">بيروت (Beirut)</option>
+              <option value="Damascus">دمشق (Damascus)</option>
+              <option value="Baghdad">بغداد (Baghdad)</option>
+            </optgroup>
+            <optgroup label="أوروبا وآسيا وأمريكا">
+              <option value="Istanbul">إسطنبول (Istanbul)</option>
+              <option value="Paris">باريس (Paris)</option>
+              <option value="London">لندن (London)</option>
+              <option value="Berlin">برلين (Berlin)</option>
+              <option value="Madrid">مدريد (Madrid)</option>
+              <option value="Rome">روما (Rome)</option>
+              <option value="Amsterdam">أمستردام (Amsterdam)</option>
+              <option value="Brussels">بروكسل (Brussels)</option>
+              <option value="Washington">واشنطن (Washington DC)</option>
+              <option value="New York">نويورك (New York)</option>
+              <option value="Montreal">مونتريال (Montreal)</option>
+            </optgroup>
+          </select>
+          <div class="btn-row">
+            <button class="btn-action" onclick="getPrayerTimes()">تحديث المواقيت</button>
+            <button id="gpsBtn" class="btn-action" style="background:#0d6efd;" onclick="getLocationByGPS()">📍 موقعي الحالي (GPS)</button>
+          </div>
+          <div id="gpsStatus" style="font-size:12px; margin-top:8px; font-weight:bold; color:var(--primary);"></div>
+        </div>
+
+        <div class="time-card"><span>الفجر</span><span id="fajr">--:--</span></div>
+        <div class="time-card"><span>الشروق</span><span id="sunrise">--:--</span></div>
+        <div class="time-card"><span>الظهر</span><span id="dhuhr">--:--</span></div>
+        <div class="time-card"><span>العصر</span><span id="asr">--:--</span></div>
+        <div class="time-card"><span>المغرب</span><span id="maghrib">--:--</span></div>
+        <div class="time-card"><span>العشاء</span><span id="isha">--:--</span></div>
+      </div>
+
+      <!-- 2. الاستماع للقرآن -->
+      <div id="quranPage" class="page">
+        <div class="box">
+          <h3 style="margin-top:0">الاستماع للتلاوات القرآنية</h3>
+          
+          <label>🔍 ابحث عن قارئ:</label>
+          <input type="text" id="reciterSearchInput" placeholder="اكتب اسم القارئ للتصفية..." oninput="filterReciters()">
+
+          <label>اختر القارئ:</label>
+          <select id="reciterSelect" onchange="loadReciterSurahs()"></select>
+
+          <div id="moshafSelectContainer" style="display:none; margin-top:8px;">
+            <label style="color:var(--primary);">📜 اختر الرواية / المصحف:</label>
+            <select id="moshafSelect" onchange="renderSurahListForSelectedMoshaf()"></select>
+          </div>
+
+          <hr style="margin:15px 0; border:0; border-top:1px solid rgba(0,0,0,0.1);">
+
+          <label>🔍 ابحث عن سورة للاستماع:</label>
+          <input type="text" id="listenSurahSearchInput" placeholder="اكتب اسم السورة..." oninput="filterListenSurahs()">
+
+          <label>اختر السورة:</label>
+          <select id="surahSelect"></select>
+
+          <button class="btn-action" onclick="playAudio()">تشغيل التلاوة</button>
+          <audio id="audioPlayer" controls style="display:none;"></audio>
+        </div>
+      </div>
+
+      <!-- 3. قراءة القرآن -->
+      <div id="readPage" class="page">
+        <div class="box">
+          <h3 style="margin-top:0">قراءة القرآن الكريم</h3>
+          
+          <label>🔍 ابحث عن سورة للقراءة:</label>
+          <input type="text" id="readSurahSearchInput" placeholder="اكتب اسم السورة..." oninput="filterReadSurahs()">
+
+          <label>اختر السورة للقراءة:</label>
+          <select id="readSurahSelect" onchange="loadSurahText()"></select>
+          
+          <div id="quranTextContent" class="quran-reader" style="margin-top:15px;">اختر سورة لعرضها...</div>
+          <div class="pagination" style="display:flex; gap:10px; align-items:center; justify-content:center; margin-top:12px;">
+            <button class="btn-action" style="width:auto; min-width:120px;" onclick="prevSurahPage()">◀ السابق</button>
+            <span id="surahPageInfo" style="font-weight:bold; color:var(--primary);">صفحة 0 / 0</span>
+            <button class="btn-action" style="width:auto; min-width:120px;" onclick="nextSurahPage()">التالي ▶</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. البحث في الآيات -->
+      <div id="searchVersePage" class="page">
+        <div class="box">
+          <h3 style="margin-top:0">🔍 البحث في نص القرآن الكريم</h3>
+          <input type="text" id="verseSearchInput" placeholder="مثال: الرحمة، الصلاة...">
+          <button class="btn-action" onclick="searchQuranVerse()">بحث في الآيات</button>
+        </div>
+        <div id="searchResultsContainer"></div>
+      </div>
+
+      <!-- 5. الأذكار -->
+      <div id="azkarPage" class="page">
+        <div class="box">
+          <h3 style="margin-top:0">📿 حصن المسلم - الأذكار اليومية</h3>
+          <label>اختر نوع الذكر:</label>
+          <select id="azkarSelect" onchange="loadAzkarContent()">
+            <option value="morning">أذكار الصباح</option>
+            <option value="evening">أذكار المساء</option>
+            <option value="sleep">أذكار النوم</option>
+          </select>
+          <div id="azkarContent" class="info-card" style="font-size: 17px; line-height: 2;"></div>
+        </div>
+      </div>
+
+      <!-- 6. معلومات السور -->
+      <div id="infoPage" class="page">
+        <div class="box">
+          <h3 style="margin-top:0">معلومات وسبب نزول السور</h3>
+          <label>اختر السورة لمعرفة تفاصيلها:</label>
+          <select id="infoSurahSelect" onchange="loadSurahInfo()"></select>
+          <div id="surahInfoContent" class="info-card">اختر سورة من القائمة.</div>
+        </div>
+      </div>
+
+      <!-- 7. الإعدادات -->
+      <div id="settingsPage" class="page">
+        <div class="box">
+          <h3 style="margin-top:0">⚙️ إعدادات التطبيق</h3>
+          <div class="setting-group">
+            <label>🎨 مظهر التطبيق (الثيم):</label>
+            <select id="themeSelect" onchange="changeTheme()">
+              <option value="light">الوضع الفاتح (Light)</option>
+              <option value="dark">الوضع الداكن (Dark)</option>
+              <option value="emerald">الأخضر الإسلامي (Emerald)</option>
+            </select>
+          </div>
+           <div class="setting-group">
+             <label>🔍 حجم خط قراءة القرآن:</label>
+             <input type="number" id="fontSizeInput" value="22" min="16" max="36" onchange="changeFontSize()">
+           </div>
+           <div class="setting-group">
+             <label>📺 وضع التلفاز (TV Mode):</label>
+             <select id="tvModeSelect" onchange="changeTvMode()">
+               <option value="auto">تلقائي (Auto)</option>
+               <option value="on">مفعل (On)</option>
+               <option value="off">معطل (Off)</option>
+             </select>
+           </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="/js/app.js"></script>
+</body>
+</html>
